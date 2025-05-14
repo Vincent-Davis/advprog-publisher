@@ -8,3 +8,7 @@ The URI `guest:guest@localhost:5672` tells both publisher and subscriber to conn
 
 ## Bukti RabbitMQ
 ![alt text](img/image.png)
+
+## Consoles
+![alt text](img/console.png)
+Pada jendela kiri terlihat konsol subscriber yang terus-menerus menerima lima event `UserCreatedEventMessage` dari publisher. Setiap event ditampilkan dengan format debug Rust, misalnya `UserCreatedEventMessage { user_id: "1", user_name: "2306275014-Amir" }`. Setelah mencetak kelima event, konsol tetap aktif menunggu event berikutnya. Di jendela kanan tampak log RabbitMQ broker yang menampilkan serangkaian koneksi AMQP. Terjadi serangkaian koneksi dan otentikasi oleh user `guest`, diikuti dengan penutupan koneksi setelah event diproses. Ini membuktikan bahwa publisher berhasil mengirim lima pesan dalam satu kali `cargo run`, sedangkan subscriber memprosesnya dan broker mencatat aktivitas koneksi sesuai urutan.
