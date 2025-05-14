@@ -21,3 +21,10 @@ In the screenshot above, the RabbitMQ “Publish” rate chart shows three disti
 
 ![Queue Depth Chart](img/slow.png)
 In this screenshot, the “Queued messages” chart peaks at 15 after running the publisher five times consecutively with only one subscriber. Each publisher run adds five messages to the queue, totaling 25 published events. Because the subscriber enforces a 1-second delay per message, it had only consumed 10 messages by that point (25 published − 10 processed = 15 remaining). As a result, RabbitMQ’s backlog rises to 15 before the consumer catches up. Over time, you can observe the red line declining as the subscriber gradually processes the queued messages. This scenario highlights how a single, slow consumer can lead to significant message accumulation when the producer is faster.
+
+## Reflection on Running Multiple Subscribers
+
+![alt text](img/multi_slow.png)
+![alt text](img/multi_slow_monitor.png)
+
+With three subscriber instances connected to the same queue, message processing is distributed almost evenly among them. In my captures, you can see one console handling “Budi” and “Dira”, another handling “Amir” and “Cica”, and the third picking up “Emir” and the remaining messages. As a result, the RabbitMQ backlog clears much faster compared to a single slow consumer. This demonstrates how horizontal scaling of consumers in an event-driven architecture can improve throughput and reduce queue build-up. To further optimize, we could adjust the consumer prefetch/QoS settings or even implement asynchronous handlers within each subscriber process. Additionally, centralizing error handling and reconnect logic would make the system more resilient under heavy load.
