@@ -16,3 +16,8 @@ Pada jendela kiri terlihat konsol subscriber yang terus-menerus menerima lima ev
 ## Monitoring Chart Based on Publisher
 ![alt text](img/monitor.png)
 In the screenshot above, the RabbitMQ “Publish” rate chart shows three distinct spikes because the publisher was run three times consecutively. Each purple peak corresponds to the burst of five messages sent in a single `cargo run`. At the same time, the “Deliver (auto ack)” metric registers matching spikes, indicating immediate delivery to the subscriber. Between runs, both publish and deliver rates drop back to zero since no new events are being published. This pattern confirms that each execution triggers a fixed batch of events and allows you to visually monitor the throughput and timing of your publisher. By watching these spikes, you can verify that the publisher is successfully connecting and dispatching messages to RabbitMQ.
+
+## Simulating Slow Subscriber and Queue Backlog
+
+![Queue Depth Chart](img/slow.png)
+In this screenshot, the “Queued messages” chart peaks at 15 after running the publisher five times consecutively with only one subscriber. Each publisher run adds five messages to the queue, totaling 25 published events. Because the subscriber enforces a 1-second delay per message, it had only consumed 10 messages by that point (25 published − 10 processed = 15 remaining). As a result, RabbitMQ’s backlog rises to 15 before the consumer catches up. Over time, you can observe the red line declining as the subscriber gradually processes the queued messages. This scenario highlights how a single, slow consumer can lead to significant message accumulation when the producer is faster.
