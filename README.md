@@ -5,3 +5,6 @@ In one execution, the publisher serializes and sends five `UserCreatedEventMessa
 ## b. The URL `guest:guest@localhost:5672` is the same as in the subscriber program—what does it mean?
 
 The URI `guest:guest@localhost:5672` tells both publisher and subscriber to connect to the same RabbitMQ broker. The first `guest` is the username and the second `guest` is its password. `localhost` indicates the broker is running on the same machine as your application. Port `5672` is the default AMQP port for client connections. Using this identical URI ensures both sides authenticate and communicate with the exact same broker instance.
+
+## Bukti RabbitMQ
+![alt text](img/image.png)
